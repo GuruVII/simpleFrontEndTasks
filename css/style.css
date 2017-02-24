@@ -3,3 +3,26 @@
 -webkit-column-count: 4;
 column-count: 4;
 }
+
+#element1{
+height: 200px;
+width: 100px;
+border: black solid 1px;
+}
+
+#element2{
+height: 150px;
+width: 75px;
+border: black solid 1px;
+}
+
+#element3{
+height: 75px;
+width: 38px;
+border: black solid 1px;
+
+}
+
+.background-blue{
+	background-color: blue;
+}
