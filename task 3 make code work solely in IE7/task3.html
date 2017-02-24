@@ -17,7 +17,18 @@
       <div class="container">
         <div class="row">
           <div class=" col s12">
-            1st task is to make a script that will will down all the numbers betwen 1 and 100 and for every number divisble by 3 write TROJKA and every number divisble by 5 write PETKA
+            3rd task is to make 
+            <pre>
+            (function() { 
+              alert("Hello World"); 
+            })();
+          </pre>
+          work solely in IE7
+          <p>I should note that I used HTML conditional statement, present in IE up to and including IE9. If I wasn't using that I would have used <pre>
+            if (/(MSIE\ [7]\.\d+)/.test(navigator.userAgent)) {
+              //expression
+            };
+          </pre></p>
           </div>
         </div>
       </div>
@@ -25,6 +36,6 @@
       <!--Import jQuery before materialize.js-->
       <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
       <script type="text/javascript" src="../assets/materialize/js/materialize.min.js"></script>
-      <script type="text/javascript" src="../js/task1"></script>
+      <!--[if IE 7]><script type="text/javascript" src="../js/task3.js"></script><![endif]-->
     </body>
   </html>
