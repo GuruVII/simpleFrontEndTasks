@@ -26,3 +26,10 @@ border: black solid 1px;
 .background-blue{
 	background-color: blue;
 }
+
+.icon-block {
+  padding: 0 15px;
+}
+.icon-block .material-icons {
+	font-size: inherit;
+}
