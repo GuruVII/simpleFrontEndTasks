@@ -34,3 +34,6 @@ border: black solid 1px;
 	font-size: inherit;
 }
 
+.z-index-1000{
+    z-index: 1000;
+}

@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-  <title>Starter Template - Materialize</title>
+  <title>Simple Front-end tasks</title>
 
   <!-- CSS  -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -12,7 +12,7 @@
 </head>
 <body>
     <div class="navbar-fixed">
-      <nav class="light-blue lighten-1" role="navigation">
+      <nav class="light-blue lighten-1  z-index-1000" role="navigation">
         <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Logo</a>
           <ul class="right hide-on-med-and-down">
             <li><a href="../task1divisionBy3And5/task1.html">Task 1</a></li>
@@ -48,7 +48,7 @@
   </div>
 
 
-  <div class="container">
+  <div class="container" ng-app="app" ng-controller="task6Controller">
     <div class="section">
 
       <!--   Icon Section   -->
@@ -120,17 +120,20 @@
     </div>
     <div class="footer-copyright">
       <div class="container">
-      Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+      Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a><br>
+    Edited by <a class="orange-text text-lighten-3" href="https://github.com/GuruVII">Guru VII</a>
       </div>
     </div>
   </footer>
 
 
   <!--  Scripts-->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../assets/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="../assets/materialize/js/materialize.min.js"></script>
-    <script type="text/javascript" src="../js/task6/task6Controller.js"></script>
-    <script type="text/javascript" src="../js/task6/task6Factory.js"></script>
+    <script type="text/javascript" src="../assets/angular.min.js"></script>
+    <script type="text/javascript" src="../assets/angular-mocks.js"></script>
+    <script type="text/javascript" src="../assets/ng-infinite-scroll.min.js"></script>
+    <script type="text/javascript" src="../js/task6.js"></script>
     <script src="../assets/materialize/js/init.js"></script>
 
   </body>
