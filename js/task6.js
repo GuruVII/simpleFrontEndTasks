@@ -41,9 +41,10 @@ var app = angular.module('app', ['infinite-scroll','ngMockE2E', 'ngResource']);
       ];
                 
       // returns the current list of phones
-        $httpBackend.whenGET(/\/phones\/(\d+)/, undefined, ['id'], ['order']).respond(function(method, url, data, headers, params) {
+        $httpBackend.whenGET(/\/phones\/(\d+)\/(\d+)/, undefined, ['id','order']).respond(function(method, url, data, headers, params) {
             var chosenPhones =[];
             var phonesArray;
+            console.log(params);
             if (params.order == 1){
                 phonesArray = allPhones.slice();
             } else {
@@ -65,8 +66,8 @@ var app = angular.module('app', ['infinite-scroll','ngMockE2E', 'ngResource']);
     
     angular.module("app").factory("task6Factory", function($http) {
         var task6Factory = {
-            phoneList: function() {
-                var promise = $http.get('/phones/8/1')
+            phoneList: function(id, order) {
+                var promise = $http.get('/phones/'+id+'/'+order)
                     .then(function(response) {
                         //First function handles success
                         console.log("test response")
@@ -83,7 +84,7 @@ var app = angular.module('app', ['infinite-scroll','ngMockE2E', 'ngResource']);
     
     app.controller('task6Controller', ['$scope', 'task6Factory', function ($scope, task6Factory) {   
         $scope.masterArray = [];
-        task6Factory.phoneList().then(function(successResponse) {
+        task6Factory.phoneList(8,2).then(function(successResponse) {
                     if (successResponse == undefined) {
                         console.log("Get failed")
                     };
