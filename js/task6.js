@@ -38,30 +38,35 @@ var app = angular.module('app', ['infinite-scroll','ngMockE2E', 'ngResource']);
               name: 'phone16'},
           {     id: 16, 
               name: 'phone17'},
-          
       ];
-
+                
       // returns the current list of phones
-        $httpBackend.whenGET(/\/phones\/(\d+)/, undefined, ['id']).respond(function(method, url, data, headers, params) {
-            var phones =[];
-            
+        $httpBackend.whenGET(/\/phones\/(\d+)/, undefined, ['id'], ['order']).respond(function(method, url, data, headers, params) {
+            var chosenPhones =[];
+            var phonesArray;
+            if (params.order == 1){
+                phonesArray = allPhones.slice();
+            } else {
+                phonesArray = allPhones.reverse().slice();                
+            }
           for (var i = step; i < params.id; i++){
-              phones.push(allPhones[i]);
+              chosenPhones.push(phonesArray[i]);
           };
+            
             step = params.id;
             console.log(step);
-          if (phones == null) {
+          if (chosenPhones == null) {
             return [404, undefined, {}];
           }
 
-          return [200, phones, {}];
+          return [200, chosenPhones, {}];
 });
     });
     
     angular.module("app").factory("task6Factory", function($http) {
         var task6Factory = {
-            partyList: function() {
-                var promise = $http.get('/phones/8')
+            phoneList: function() {
+                var promise = $http.get('/phones/8/1')
                     .then(function(response) {
                         //First function handles success
                         console.log("test response")
@@ -78,7 +83,7 @@ var app = angular.module('app', ['infinite-scroll','ngMockE2E', 'ngResource']);
     
     app.controller('task6Controller', ['$scope', 'task6Factory', function ($scope, task6Factory) {   
         $scope.masterArray = [];
-        task6Factory.partyList().then(function(successResponse) {
+        task6Factory.phoneList().then(function(successResponse) {
                     if (successResponse == undefined) {
                         console.log("Get failed")
                     };
