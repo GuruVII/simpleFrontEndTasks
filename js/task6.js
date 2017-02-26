@@ -1,46 +1,20 @@
 (function($) {
-var app = angular.module('app', ['infinite-scroll','ngMockE2E', 'ngResource']);
-    
-    app.run(function($httpBackend) {
-        var step = 0;
-      var allPhones = [
-          {    id: 0,
-              name: 'phone1'}, 
-          {     id: 1, 
-              name: 'phone2'},
-          {     id: 2, 
-              name: 'phone3'},
-          {     id: 3, 
-              name: 'phone4'},
-          {     id: 4, 
-              name: 'phone5'},
-          {     id: 5, 
-              name: 'phone6'},
-          {     id: 6, 
-              name: 'phone7'},
-          {     id: 7, 
-              name: 'phone8'},         
-          {     id: 8, 
-              name: 'phone9'},
-          {     id: 9, 
-              name: 'phone10'},
-          {     id: 10, 
-              name: 'phone11'},
-          {     id: 11, 
-              name: 'phone12'},
-          {     id: 12, 
-              name: 'phone13'},
-          {     id: 13, 
-              name: 'phone14'},
-          {     id: 14, 
-              name: 'phone15'},
-          {     id: 15, 
-              name: 'phone16'},
-          {     id: 16, 
-              name: 'phone17'},
-      ];
-                
-      // returns the current list of phones
+var app = angular.module('app', ['infinite-scroll','ngMockE2E']) 
+
+app.run(function($httpBackend) {
+    var step = 0; //keeps track of how much of the array we've gone through
+    var allPhones = [];
+
+    for (var i = 0; i < 100; i++){
+        var tempObject = {
+            name: "phone"+(i+1),
+            id: i,
+            url: "../images/3310.jpg"
+        }
+        allPhones.push(tempObject)
+    }
+
+        // returns the current list of phones
         $httpBackend.whenGET(/\/phones\/(\d+)\/(\d+)/, undefined, ['id','order']).respond(function(method, url, data, headers, params) {
             var chosenPhones =[];
             var phonesArray;
@@ -66,8 +40,8 @@ var app = angular.module('app', ['infinite-scroll','ngMockE2E', 'ngResource']);
     
     angular.module("app").factory("task6Factory", function($http) {
         var task6Factory = {
-            phoneList: function(id, order) {
-                var promise = $http.get('/phones/'+id+'/'+order)
+            phoneList: function(x) {
+                var promise = $http.get('/phones/'+x.id+'/'+x.order)
                     .then(function(response) {
                         //First function handles success
                         console.log("test response")
@@ -84,12 +58,21 @@ var app = angular.module('app', ['infinite-scroll','ngMockE2E', 'ngResource']);
     
     app.controller('task6Controller', ['$scope', 'task6Factory', function ($scope, task6Factory) {   
         $scope.masterArray = [];
-        task6Factory.phoneList(8,2).then(function(successResponse) {
-                    if (successResponse == undefined) {
-                        console.log("Get failed")
-                    };
-                    $scope.masterArray = successResponse;
-            console.log($scope.masterArray);
-        });
+        //starting GET url information
+        $scope.address = {
+            id: 8,
+            order: 1
+        };
+        $scope.loadData = function(){
+            task6Factory.phoneList($scope.address).then(function(successResponse) {
+                        if (successResponse == undefined) {
+                            console.log("Get failed")
+                        };
+                        $scope.masterArray = successResponse;
+                console.log($scope.masterArray);
+            });
+        };
+        
+        $scope.loadData();
 }]);
 })(jQuery); // end of jQuery name space
