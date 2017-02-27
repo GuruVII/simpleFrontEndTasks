@@ -24,28 +24,22 @@
             var phonesArray;
             console.log(params);
             if (params.order == 1) {
-
                 phonesArray = allPhones.slice();
-
-                console.log(phonesArray);
             } else {
                 phonesArray = allPhonesDesc.slice();
-                console.log(phonesArray);
             };
-            if ((params.id-step) < 0){ //filtering causes the result to be negative and give incorrect results
+            if ((params.id - step) < 0) { //filtering causes the result to be negative and give incorrect results
                 step = 0;
             };
             console.log("difference is: ")
             console.log(params.id - step)
-            
-            
+
+
             for (step; step < params.id; step++) {
-                console.log("HERPETY DERP")
                 chosenPhones.push(phonesArray[step]);
             };
-
+            console.log(chosenPhones)
             step = params.id;
-            console.log(step);
             if (chosenPhones == null) {
                 return [404, undefined, {}];
             }
@@ -81,39 +75,37 @@
             order: 1
         };
         $scope.loadData = function() {
+            $scope.loading = true;
             task6Factory.phoneList($scope.address).then(function(successResponse) {
                 if (successResponse == undefined) {
                     console.log("Get failed")
                 };
                 $scope.masterArray = $scope.originalArray.concat(successResponse);
                 $scope.originalArray = $scope.masterArray.slice();
-
+                infiniteArray()
 
 
             });
+            $scope.loading = false;
+
         };
 
         $scope.loadMore = function() {
-
-            infiniteArray()
-            
             $scope.loadData();
             $scope.address.id += 4;
-            
-
-
         };
 
         //this function slowly serves data from the masterArray
         function infiniteArray() {
             var last = [];
             var x
+            console.log($scope.data.length)
             if ($scope.data.length == 0) {
                 x = -1
             } else {
                 x = $scope.data.length - 1;
             }
-
+            console.log($scope.masterArray[0])
             for (var i = 1; i <= 4; i++) {
                 //check if the element is undefined, then there is no more data and the fuction can stop
                 var currentValue = $scope.masterArray[(x + i)];
@@ -124,18 +116,19 @@
                     $scope.data.push(currentValue);
                 }
             };
+
         }
-        
+
         function resetArray() {
             $scope.masterArray = [];
             $scope.originalArray = [];
             $scope.data = [];
-};
-        
+        };
+
         $scope.filterAscDesc = function() {
             resetArray()
             if ($scope.address.order == 1) {
-                
+
                 $scope.address = {
                     id: 4,
                     order: 2
@@ -149,6 +142,6 @@
                 $scope.loadData()
             }
         }
- $scope.loadMore();
+        $scope.loadMore();
     }]);
 })(jQuery); // end of jQuery name space
