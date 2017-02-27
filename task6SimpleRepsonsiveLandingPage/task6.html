@@ -56,9 +56,11 @@
       <div class="row">      
         <div class="col s12 m4 l3" ng-repeat="items in data track by $index">
           <div class="card">
-            <div class="card-image">
-              <img ng-src="{{items.url}}">
-            </div>
+            <a ng-href="{{items.url}}.jpg" target="_blank">
+                <div class="card-image">
+                    <img ng-src="{{items.url}}thumbnail.jpg">
+                </div>
+              </a>
             <div class="card-content">
               This is <b>{{items.name}}</b>.<br> 
                 it is the best phone is the best phone in existance

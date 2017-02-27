@@ -11,7 +11,7 @@
                 var tempObject = {
                     name: "Phone " + (i + 1),
                     id: i,
-                    url: "../images/3310.jpg"
+                    url: "../images/3310"
                 }
                 allPhones.push(tempObject)
             }
