@@ -80,12 +80,11 @@
 
         $scope.loadMore = function() {
             if ($scope.masterArray >= $scope.data){
-                infiniteArray()
-                $scope.address.id += 4;
-                $scope.loadData();
-                
-            }
-                     
+                    infiniteArray()
+                    $scope.address.id += 4;
+                    $scope.loadData();
+                  
+            }               
         };
 
         //this function slowly serves data from the masterArray
@@ -109,6 +108,5 @@
             };
         }
 
-        $scope.loadData();
     }]);
 })(jQuery); // end of jQuery name space
