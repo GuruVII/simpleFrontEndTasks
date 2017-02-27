@@ -54,7 +54,6 @@
     angular.module("app").factory("task6Factory", function($http) {
         var task6Factory = {
             phoneList: function(x) {
-                console.log(x)
                 var promise = $http.get('/phones/' + x.page + '/' + x.order)
                     .then(function(response) {
                         //First function handles success
@@ -86,6 +85,8 @@
                 };
                 $scope.masterArray = $scope.originalArray.concat(successResponse);
                 $scope.originalArray = $scope.masterArray.slice();
+                console.log("using GET we received the following array:")
+                console.log(successResponse);
                 infiniteArray()
 
 
