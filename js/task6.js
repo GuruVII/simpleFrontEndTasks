@@ -7,7 +7,7 @@
         var allPhonesDesc = [];
 
         (function() {
-            for (var i = 0; i < 100; i++) {
+            for (var i = 0; i < 101; i++) {
                 var tempObject = {
                     name: "Phone " + (i + 1),
                     id: i,
@@ -31,9 +31,17 @@
             } else {
                 phonesArray = allPhonesDesc.slice();
                 console.log(phonesArray);
-            }
-            for (var i = step; i < params.id; i++) {
-                chosenPhones.push(phonesArray[i]);
+            };
+            if ((params.id-step) < 0){ //filtering causes the result to be negative and give incorrect results
+                step = 0;
+            };
+            console.log("difference is: ")
+            console.log(params.id - step)
+            
+            
+            for (step; step < params.id; step++) {
+                console.log("HERPETY DERP")
+                chosenPhones.push(phonesArray[step]);
             };
 
             step = params.id;
@@ -52,7 +60,6 @@
                 var promise = $http.get('/phones/' + x.id + '/' + x.order)
                     .then(function(response) {
                         //First function handles success
-                        console.log("test response")
                         return response.data;
                     }, function(response) {
                         //Second function handles error
@@ -70,7 +77,7 @@
         $scope.data = [];
         //starting GET url information
         $scope.address = {
-            id: 4,
+            id: 8,
             order: 1
         };
         $scope.loadData = function() {
@@ -78,7 +85,6 @@
                 if (successResponse == undefined) {
                     console.log("Get failed")
                 };
-                console.log(successResponse);
                 $scope.masterArray = $scope.originalArray.concat(successResponse);
                 $scope.originalArray = $scope.masterArray.slice();
 
@@ -90,10 +96,10 @@
         $scope.loadMore = function() {
 
             infiniteArray()
-
-            $scope.address.id += 4;
-
+            
             $scope.loadData();
+            $scope.address.id += 4;
+            
 
 
         };
@@ -143,6 +149,6 @@
                 $scope.loadData()
             }
         }
-
+ $scope.loadMore();
     }]);
 })(jQuery); // end of jQuery name space
