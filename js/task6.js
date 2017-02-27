@@ -2,9 +2,9 @@
     var app = angular.module('app', ['infinite-scroll', 'ngMockE2E'])
 
     app.run(function($httpBackend) {
-        var step = 0; //keeps track of how much of the array we've gone through
         var allPhones = [];
         var allPhonesDesc = [];
+        var perPage = 4;
 
         (function() {
             for (var i = 0; i < 101; i++) {
@@ -17,29 +17,32 @@
             }
             allPhonesDesc = allPhones.slice().reverse();
         })();
-
+        
+       
+        
         // returns the current list of phones
-        $httpBackend.whenGET(/\/phones\/(\d+)\/(\d+)/, undefined, ['id', 'order']).respond(function(method, url, data, headers, params) {
+        $httpBackend.whenGET(/\/phones\/(\d+)\/(\w+)/, undefined, ['page', 'order']).respond(function(method, url, data, headers, params) {
             var chosenPhones = [];
             var phonesArray;
+            var page = parseInt(params.page, 10);
+                
             console.log(params);
-            if (params.order == 1) {
+            if (params.order == "asc") {
                 phonesArray = allPhones.slice();
             } else {
                 phonesArray = allPhonesDesc.slice();
-            };
-            if ((params.id - step) < 0) { //filtering causes the result to be negative and give incorrect results
-                step = 0;
-            };
-            console.log("difference is: ")
-            console.log(params.id - step)
-
-
-            for (step; step < params.id; step++) {
-                chosenPhones.push(phonesArray[step]);
-            };
-            console.log(chosenPhones)
-            step = params.id;
+            };  
+                
+             if (page == 0){
+                for (var i = page * perPage; i <  ((page * perPage)  + (perPage * 2)); i++) {     
+                    chosenPhones.push(phonesArray[i]);   
+                }
+             } else {
+                 for (var i = (page + 1) * perPage; i <  (page + 1) * perPage  + perPage; i++) {     
+                    chosenPhones.push(phonesArray[i]);   
+                    }
+             };
+             
             if (chosenPhones == null) {
                 return [404, undefined, {}];
             }
@@ -51,7 +54,8 @@
     angular.module("app").factory("task6Factory", function($http) {
         var task6Factory = {
             phoneList: function(x) {
-                var promise = $http.get('/phones/' + x.id + '/' + x.order)
+                console.log(x)
+                var promise = $http.get('/phones/' + x.page + '/' + x.order)
                     .then(function(response) {
                         //First function handles success
                         return response.data;
@@ -71,8 +75,8 @@
         $scope.data = [];
         //starting GET url information
         $scope.address = {
-            id: 8,
-            order: 1
+            page: 0,
+            order: "asc"
         };
         $scope.loadData = function() {
             $scope.loading = true;
@@ -92,7 +96,7 @@
 
         $scope.loadMore = function() {
             $scope.loadData();
-            $scope.address.id += 4;
+            $scope.address.page += 1;
         };
 
         //this function slowly serves data from the masterArray
@@ -105,7 +109,6 @@
             } else {
                 x = $scope.data.length - 1;
             }
-            console.log($scope.masterArray[0])
             for (var i = 1; i <= 4; i++) {
                 //check if the element is undefined, then there is no more data and the fuction can stop
                 var currentValue = $scope.masterArray[(x + i)];
@@ -127,17 +130,17 @@
 
         $scope.filterAscDesc = function() {
             resetArray()
-            if ($scope.address.order == 1) {
+            if ($scope.address.order == "desc") {
 
                 $scope.address = {
-                    id: 4,
-                    order: 2
+                    page: 0,
+                    order: "asc"
                 };
                 $scope.loadData()
             } else {
                 $scope.address = {
-                    id: 4,
-                    order: 1
+                    page: 0,
+                    order: "desc"
                 }
                 $scope.loadData()
             }
