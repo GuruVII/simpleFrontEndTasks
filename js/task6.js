@@ -4,15 +4,19 @@
     app.run(function($httpBackend) {
         var step = 0; //keeps track of how much of the array we've gone through
         var allPhones = [];
+        var allPhonesDesc = [];
 
-        for (var i = 0; i < 100; i++) {
-            var tempObject = {
-                name: "Phone " + (i + 1),
-                id: i,
-                url: "../images/3310.jpg"
+        (function() {
+            for (var i = 0; i < 100; i++) {
+                var tempObject = {
+                    name: "Phone " + (i + 1),
+                    id: i,
+                    url: "../images/3310.jpg"
+                }
+                allPhones.push(tempObject)
             }
-            allPhones.push(tempObject)
-        }
+            allPhonesDesc = allPhones.slice().reverse();
+        })();
 
         // returns the current list of phones
         $httpBackend.whenGET(/\/phones\/(\d+)\/(\d+)/, undefined, ['id', 'order']).respond(function(method, url, data, headers, params) {
@@ -20,9 +24,13 @@
             var phonesArray;
             console.log(params);
             if (params.order == 1) {
+
                 phonesArray = allPhones.slice();
+
+                console.log(phonesArray);
             } else {
-                phonesArray = allPhones.reverse().slice();
+                phonesArray = allPhonesDesc.slice();
+                console.log(phonesArray);
             }
             for (var i = step; i < params.id; i++) {
                 chosenPhones.push(phonesArray[i]);
@@ -59,10 +67,10 @@
     app.controller('task6Controller', ['$scope', 'task6Factory', function($scope, task6Factory) {
         $scope.masterArray = [];
         $scope.originalArray = [];
-        $scope.data=[];
+        $scope.data = [];
         //starting GET url information
         $scope.address = {
-            id: 8,
+            id: 4,
             order: 1
         };
         $scope.loadData = function() {
@@ -70,21 +78,24 @@
                 if (successResponse == undefined) {
                     console.log("Get failed")
                 };
+                console.log(successResponse);
                 $scope.masterArray = $scope.originalArray.concat(successResponse);
                 $scope.originalArray = $scope.masterArray.slice();
-                
-                
-                
+
+
+
             });
         };
 
         $scope.loadMore = function() {
-            if ($scope.masterArray >= $scope.data){
-                    infiniteArray()
-                    $scope.address.id += 4;
-                    $scope.loadData();
-                  
-            }               
+
+            infiniteArray()
+
+            $scope.address.id += 4;
+
+            $scope.loadData();
+
+
         };
 
         //this function slowly serves data from the masterArray
@@ -101,11 +112,36 @@
                 //check if the element is undefined, then there is no more data and the fuction can stop
                 var currentValue = $scope.masterArray[(x + i)];
                 if (currentValue == undefined) {
+                    console.log("it was unedefined")
                     return
                 } else {
                     $scope.data.push(currentValue);
                 }
             };
+        }
+        
+        function resetArray() {
+            $scope.masterArray = [];
+            $scope.originalArray = [];
+            $scope.data = [];
+};
+        
+        $scope.filterAscDesc = function() {
+            resetArray()
+            if ($scope.address.order == 1) {
+                
+                $scope.address = {
+                    id: 4,
+                    order: 2
+                };
+                $scope.loadData()
+            } else {
+                $scope.address = {
+                    id: 4,
+                    order: 1
+                }
+                $scope.loadData()
+            }
         }
 
     }]);
