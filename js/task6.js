@@ -95,7 +95,7 @@
         };
 
         $scope.loadMore = function() {
-            if (isDone) return;
+            if (isDone) return; //stops the ng-infinite
             $scope.loadData();
             $scope.address.page += 1;
         };
@@ -110,7 +110,16 @@
             } else {
                 x = $scope.data.length - 1;
             }
-            for (var i = 1; i <= 4; i++) {
+            if ( x == -1){
+                passIntoInfinite(8, x, last);
+            }
+            else {
+                passIntoInfinite(4, x, last)
+            }
+        }
+        
+        function passIntoInfinite (loops, x , last){
+            for (var i = 1; i <= loops; i++) {
                 //check if the element is undefined, then there is no more data and the fuction can stop
                 var currentValue = $scope.masterArray[(x + i)];
                 if (currentValue == undefined) {
@@ -121,7 +130,6 @@
                     $scope.data.push(currentValue);
                 }
             };
-
         }
 
         function resetArray() {
@@ -139,18 +147,17 @@
                     page: 0,
                     order: "asc"
                 };
-                //I admit, I have no idea why, but this is the only way I found, I could get this to work
                 $scope.loadMore(); 
-                $scope.loadMore();
+                
             } else {
                 $scope.address = {
                     page: 0,
                     order: "desc"
                 }
                 $scope.loadMore();
-                $scope.loadMore();
+                
             }
         }
-        $scope.loadMore();
+        
     }]);
 })(jQuery); // end of jQuery name space
