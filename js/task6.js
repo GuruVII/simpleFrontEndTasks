@@ -115,6 +115,9 @@
                 var currentValue = $scope.masterArray[(x + i)];
                 if (currentValue == undefined) {
                     console.log("it was unedefined")
+                    $scope.loadMore = function(){//disables loadmore when there is no more data
+                        return
+                    }
                     return
                 } else {
                     $scope.data.push(currentValue);
