@@ -72,13 +72,13 @@
         $scope.masterArray = [];
         $scope.originalArray = [];
         $scope.data = [];
+        var isDone = false;
         //starting GET url information
         $scope.address = {
             page: 0,
             order: "asc"
         };
         $scope.loadData = function() {
-            $scope.loading = true;
             task6Factory.phoneList($scope.address).then(function(successResponse) {
                 if (successResponse == undefined) {
                     console.log("Get failed")
@@ -88,14 +88,14 @@
                 console.log("using GET we received the following array:")
                 console.log(successResponse);
                 infiniteArray()
-
+                
 
             });
-            $scope.loading = false;
 
         };
 
         $scope.loadMore = function() {
+            if (isDone) return;
             $scope.loadData();
             $scope.address.page += 1;
         };
@@ -115,9 +115,7 @@
                 var currentValue = $scope.masterArray[(x + i)];
                 if (currentValue == undefined) {
                     console.log("it was unedefined")
-                    $scope.loadMore = function(){//disables loadmore when there is no more data
-                        return
-                    }
+                    isDone = true;
                     return
                 } else {
                     $scope.data.push(currentValue);
@@ -130,6 +128,7 @@
             $scope.masterArray = [];
             $scope.originalArray = [];
             $scope.data = [];
+            isDone = false;
         };
 
         $scope.filterAscDesc = function() {
@@ -140,13 +139,16 @@
                     page: 0,
                     order: "asc"
                 };
-                $scope.loadData()
+                //I admit, I have no idea why, but this is the only way I found, I could get this to work
+                $scope.loadMore(); 
+                $scope.loadMore();
             } else {
                 $scope.address = {
                     page: 0,
                     order: "desc"
                 }
-                $scope.loadData()
+                $scope.loadMore();
+                $scope.loadMore();
             }
         }
         $scope.loadMore();
